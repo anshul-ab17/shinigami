@@ -1,0 +1,49 @@
+{% if spec.stack.language == "typescript" -%}
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["node", "dist/index.js"]
+{% elif spec.stack.language == "python" -%}
+FROM python:3.12-slim
+WORKDIR /app
+COPY pyproject.toml ./
+RUN pip install --no-cache-dir .
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+{% elif spec.stack.language == "go" -%}
+FROM golang:1.22-alpine AS build
+WORKDIR /app
+COPY go.* ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o server ./cmd/server
+FROM alpine:3.19
+COPY --from=build /app/server /server
+EXPOSE 8080
+CMD ["/server"]
+{% elif spec.stack.language == "rust" -%}
+FROM rust:1.78 AS build
+WORKDIR /app
+COPY Cargo.* ./
+COPY src ./src
+RUN cargo build --release
+FROM debian:bookworm-slim
+COPY --from=build /app/target/release/{{ spec.name }} /usr/local/bin/
+EXPOSE 8080
+CMD ["{{ spec.name }}"]
+{% elif spec.stack.language == "cpp" -%}
+FROM ubuntu:24.04 AS build
+RUN apt-get update && apt-get install -y cmake g++ libjsoncpp-dev uuid-dev libssl-dev zlib1g-dev
+WORKDIR /app
+COPY . .
+RUN mkdir build && cd build && cmake .. && make -j$(nproc)
+FROM ubuntu:24.04
+COPY --from=build /app/build/{{ spec.name }} /usr/local/bin/
+EXPOSE 8080
+CMD ["{{ spec.name }}"]
+{% endif %}

@@ -1,0 +1,15 @@
+[project]
+name = "{{ spec.name }}"
+version = "0.1.0"
+description = "{{ spec.description }}"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "pydantic>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.13.0",
+    "psycopg2-binary>=2.9.0",
+    {% if spec.stack.cache == "redis" %}"redis>=5.0.0",{% endif %}
+    {% if spec.stack.auth == "jwt" %}"python-jose[cryptography]>=3.3.0","passlib[bcrypt]>=1.7.0",{% endif %}
+]

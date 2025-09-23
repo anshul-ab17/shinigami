@@ -1,0 +1,21 @@
+#include <drogon/drogon.h>
+
+int main() {
+    drogon::app()
+        .setLogPath("./")
+        .setLogLevel(trantor::Logger::kInfo)
+        .addListener("0.0.0.0", 8080)
+        .setThreadNum(16)
+        .registerHandler(
+            "/health",
+            [](const drogon::HttpRequestPtr &,
+               std::function<void(const drogon::HttpResponsePtr &)> &&callback) {
+                Json::Value body;
+                body["status"] = "ok";
+                body["service"] = "{{ spec.name }}";
+                auto resp = drogon::HttpResponse::newHttpJsonResponse(body);
+                callback(resp);
+            })
+        .run();
+    return 0;
+}

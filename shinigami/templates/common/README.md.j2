@@ -1,0 +1,25 @@
+# {{ spec.display_name }}
+
+{{ spec.description }}
+
+## Stack
+
+- **Language**: {{ spec.stack.language }}
+- **Framework**: {{ spec.stack.framework }}
+- **Database**: {{ spec.stack.database }}
+{% if spec.stack.cache %}- **Cache**: {{ spec.stack.cache }}{% endif %}
+{% if spec.stack.auth %}- **Auth**: {{ spec.stack.auth }}{% endif %}
+
+## Getting Started
+
+```bash
+docker-compose up -d
+```
+
+## API Routes
+
+{% for route in spec.api_routes -%}
+### {{ route.prefix }}
+{% for endpoint in route.endpoints %}- {{ endpoint }}
+{% endfor %}
+{% endfor %}

@@ -1,0 +1,12 @@
+from pydantic_settings import BaseSettings
+
+
+class Settings(BaseSettings):
+    database_url: str = "postgresql://postgres:postgres@localhost:5432/{{ spec.name }}"
+    {% if spec.stack.cache == "redis" %}redis_url: str = "redis://localhost:6379"{% endif %}
+    port: int = 8000
+
+    model_config = {"env_prefix": "{{ spec.name.upper() }}_"}
+
+
+settings = Settings()

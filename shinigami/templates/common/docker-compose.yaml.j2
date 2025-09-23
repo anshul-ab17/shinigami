@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "{{ '3000:3000' if spec.stack.language == 'typescript' else '8000:8000' if spec.stack.language == 'python' else '8080:8080' }}"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/{{ spec.name }}
+      {% if spec.stack.cache == 'redis' %}- REDIS_URL=redis://redis:6379{% endif %}
+    depends_on:
+      - db
+      {% if spec.stack.cache == 'redis' %}- redis{% endif %}
+
+  db:
+    {% if spec.stack.database == 'postgresql' -%}
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: {{ spec.name }}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    {% elif spec.stack.database == 'mongodb' -%}
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    {% endif %}
+
+  {% if spec.stack.cache == 'redis' -%}
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  {% endif %}
+
+volumes:
+  {% if spec.stack.database == 'postgresql' -%}
+  pgdata:
+  {% elif spec.stack.database == 'mongodb' -%}
+  mongodata:
+  {% endif %}

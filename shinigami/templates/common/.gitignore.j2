@@ -1,0 +1,16 @@
+{% if spec.stack.language == "typescript" -%}
+node_modules/
+dist/
+{% elif spec.stack.language == "python" -%}
+__pycache__/
+*.pyc
+.venv/
+{% elif spec.stack.language == "go" -%}
+/server
+{% elif spec.stack.language == "rust" -%}
+/target
+{% elif spec.stack.language == "cpp" -%}
+/build
+{% endif %}
+.env
+*.log
