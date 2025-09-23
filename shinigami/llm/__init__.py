@@ -1,0 +1,15 @@
+import os
+from shinigami.config import Settings
+from shinigami.llm.base import LLMProvider
+from shinigami.llm.claude import ClaudeProvider
+from shinigami.llm.openai_provider import OpenAIProvider
+
+
+def get_provider(settings: Settings) -> LLMProvider:
+    if settings.provider == "claude":
+        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+        return ClaudeProvider(model=settings.claude_model, api_key=api_key)
+    elif settings.provider == "openai":
+        api_key = os.environ.get("OPENAI_API_KEY", "")
+        return OpenAIProvider(model=settings.openai_model, api_key=api_key)
+    raise ValueError(f"Unknown provider: {settings.provider}")
