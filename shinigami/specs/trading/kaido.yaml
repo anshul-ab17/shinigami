@@ -1,0 +1,60 @@
+name: kaido
+display_name: Kaido
+category: trading
+folder: "3.kaido"
+description: A Rust-powered derivatives trading platform supporting futures and options contracts with margin and settlement engines.
+
+stack:
+  language: Rust
+  framework: Actix-web
+  database: PostgreSQL
+  orm: sqlx
+  cache: Redis
+  auth: jwt
+
+features:
+  - Futures and options contract lifecycle management
+  - Margin account management with mark-to-market
+  - Real-time position P&L calculation
+  - Liquidation engine with threshold monitoring
+  - Settlement and expiry processing
+  - Risk limit enforcement per account
+  - Redis-cached position snapshots for low-latency reads
+  - Comprehensive trade and position audit log
+
+models:
+  - User
+  - Account
+  - Contract
+  - Position
+  - Order
+  - Trade
+  - MarginCall
+  - Settlement
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /contracts
+    endpoints:
+      - GET /
+      - GET /:id
+      - GET /:id/orderbook
+  - prefix: /orders
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /positions
+    endpoints:
+      - GET /
+      - GET /:id
+      - GET /:id/pnl
+  - prefix: /account
+    endpoints:
+      - GET /margin
+      - GET /history

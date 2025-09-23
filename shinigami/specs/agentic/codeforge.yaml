@@ -1,0 +1,59 @@
+name: codeforge
+display_name: CodeForge
+category: agentic
+folder: "1.codeforge"
+description: An AI-powered code generation and review platform that scaffolds projects, suggests refactors, and runs automated code analysis.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: Redis
+  auth: jwt
+
+features:
+  - AI-driven code generation from natural language prompts
+  - Automated code review with issue categorization
+  - Project scaffolding from templates with customization
+  - Git diff analysis and refactor suggestion
+  - Multi-language support via pluggable LLM backends
+  - Redis-queued async generation jobs with status polling
+  - Prompt history and reuse library
+  - Generated code export and GitHub push integration
+
+models:
+  - User
+  - GenerationJob
+  - CodeReview
+  - Scaffold
+  - PromptTemplate
+  - Repository
+  - Suggestion
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /generate
+    endpoints:
+      - POST /
+      - GET /:jobId/status
+      - GET /:jobId/result
+  - prefix: /review
+    endpoints:
+      - POST /
+      - GET /:id
+      - GET /:id/suggestions
+  - prefix: /scaffolds
+    endpoints:
+      - GET /templates
+      - POST /
+      - GET /:id
+  - prefix: /prompts
+    endpoints:
+      - GET /
+      - POST /
+      - DELETE /:id

@@ -1,0 +1,52 @@
+name: votesphere
+display_name: VoteSphere
+category: real-world
+folder: "8.votesphere"
+description: A community-driven polling and voting platform with ranked-choice support, live results, and anti-fraud mechanisms.
+
+stack:
+  language: Go
+  framework: Gin
+  database: PostgreSQL
+  orm: null
+  cache: Redis
+  auth: jwt
+
+features:
+  - Poll creation with single-choice, multi-choice, and ranked-choice modes
+  - Real-time vote tallying with Redis atomic counters
+  - Anti-duplicate voting via token-based ballot tracking
+  - Public and private poll access controls
+  - Scheduled polls with open/close windows
+  - Results visualization with percentage breakdowns
+  - Comment threads on polls
+
+models:
+  - User
+  - Poll
+  - Option
+  - Vote
+  - Ballot
+  - Comment
+  - PollResult
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /polls
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - GET /:id/results
+      - GET /:id/comments
+      - POST /:id/comments
+  - prefix: /votes
+    endpoints:
+      - POST /
+      - GET /my

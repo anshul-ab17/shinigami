@@ -1,0 +1,59 @@
+name: coinforge
+display_name: CoinForge
+category: trading
+folder: "2.coinforge"
+description: A high-performance cryptocurrency exchange engine with order book management, matching engine, and trade execution in C++.
+
+stack:
+  language: C++
+  framework: Drogon
+  database: PostgreSQL
+  orm: null
+  cache: Redis
+  auth: jwt
+
+features:
+  - Central limit order book with price-time priority matching
+  - Market, limit, and stop-limit order types
+  - Real-time trade feed via WebSocket
+  - Redis-backed order book snapshot for latency-sensitive reads
+  - Multi-asset pair trading support
+  - Account funding and withdrawal management
+  - Trade history and open orders per user
+  - Fee tier calculation based on 30-day volume
+
+models:
+  - User
+  - Account
+  - Asset
+  - TradingPair
+  - Order
+  - Trade
+  - OrderBook
+  - Deposit
+  - Withdrawal
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /market
+    endpoints:
+      - GET /pairs
+      - GET /pairs/:symbol/orderbook
+      - GET /pairs/:symbol/trades
+      - GET /pairs/:symbol/ticker
+  - prefix: /orders
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /account
+    endpoints:
+      - GET /balances
+      - POST /deposit
+      - POST /withdraw
+      - GET /history

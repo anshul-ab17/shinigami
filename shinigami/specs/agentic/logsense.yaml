@@ -1,0 +1,62 @@
+name: logsense
+display_name: LogSense
+category: agentic
+folder: "5.logsense"
+description: An AI-powered log analysis and anomaly detection platform that ingests application logs and surfaces root-cause insights.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Log ingestion via HTTP push and agent-based pull
+  - Full-text log search powered by Elasticsearch
+  - AI-driven anomaly detection and pattern clustering
+  - Root-cause analysis report generation
+  - Alert rules with threshold and ML-based triggers
+  - Log retention policies and archival management
+  - Dashboard with error rate and latency trend charts
+  - Integration webhooks for PagerDuty and Slack
+
+models:
+  - User
+  - LogSource
+  - LogEntry
+  - AnomalyEvent
+  - RootCauseReport
+  - AlertRule
+  - AlertFiring
+  - RetentionPolicy
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /sources
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /logs
+    endpoints:
+      - POST /ingest
+      - GET /search
+      - GET /stream
+  - prefix: /anomalies
+    endpoints:
+      - GET /
+      - GET /:id
+      - POST /:id/report
+  - prefix: /alerts
+    endpoints:
+      - GET /
+      - POST /
+      - PUT /:id
+      - DELETE /:id

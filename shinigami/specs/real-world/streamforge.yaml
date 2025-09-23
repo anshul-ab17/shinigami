@@ -1,0 +1,60 @@
+name: streamforge
+display_name: StreamForge
+category: real-world
+folder: "9.streamforge"
+description: A video hosting and streaming platform with upload, transcoding job management, playlists, and CDN delivery via object storage.
+
+stack:
+  language: Go
+  framework: Gin
+  database: PostgreSQL
+  orm: null
+  cache: null
+  auth: jwt
+
+features:
+  - Video upload with chunked multipart support
+  - Async transcoding job queue with status tracking
+  - Object storage integration via MinIO/S3 for video files
+  - Playlist creation and management
+  - "Video metadata: title, description, tags, thumbnail"
+  - View count tracking and engagement metrics
+  - Public and unlisted video visibility modes
+  - Comment threads on videos
+
+models:
+  - User
+  - Video
+  - TranscodeJob
+  - Playlist
+  - PlaylistItem
+  - Comment
+  - ViewEvent
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /videos
+    endpoints:
+      - GET /
+      - POST /upload
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - GET /:id/stream
+      - GET /:id/comments
+      - POST /:id/comments
+  - prefix: /transcode
+    endpoints:
+      - GET /:jobId/status
+  - prefix: /playlists
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - POST /:id/items
+      - DELETE /:id/items/:videoId

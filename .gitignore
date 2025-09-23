@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.env
+.pytest_cache/
+.mypy_cache/
+.shinigami-progress.json
+.superpowers/

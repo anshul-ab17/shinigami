@@ -1,0 +1,56 @@
+name: archgen
+display_name: ArchGen
+category: agentic
+folder: "2.archgen"
+description: An AI system architecture generator that produces infrastructure diagrams, tech stack recommendations, and IaC templates from requirements.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Natural language requirements ingestion and analysis
+  - AI-generated system architecture recommendations
+  - Infrastructure-as-Code template generation (Terraform, Docker Compose)
+  - Architecture diagram export as Mermaid and PlantUML
+  - Component dependency graph analysis
+  - Cost estimation for recommended cloud resources
+  - Architecture versioning and comparison
+
+models:
+  - User
+  - ArchProject
+  - Requirement
+  - ArchDesign
+  - Component
+  - IaCTemplate
+  - DiagramExport
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /projects
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+  - prefix: /designs
+    endpoints:
+      - POST /generate
+      - GET /:id
+      - GET /:id/components
+      - GET /:id/diagram
+  - prefix: /templates
+    endpoints:
+      - GET /:designId
+      - POST /:designId/generate
+      - GET /:id/download

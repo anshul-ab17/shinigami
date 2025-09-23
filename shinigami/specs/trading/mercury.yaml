@@ -1,0 +1,63 @@
+name: mercury
+display_name: Mercury
+category: trading
+folder: "11.mercury"
+description: A Rust-powered algorithmic trading infrastructure platform with strategy backtesting, signal generation, and live execution.
+
+stack:
+  language: Rust
+  framework: Actix-web
+  database: PostgreSQL
+  orm: sqlx
+  cache: Redis
+  auth: jwt
+
+features:
+  - Strategy definition with parameterizable entry/exit rules
+  - Historical data backtesting engine with performance metrics
+  - Live signal generation and paper trading mode
+  - Order routing to multiple broker adapters
+  - Portfolio-level risk controls and drawdown limits
+  - Redis pub/sub for real-time signal broadcast
+  - Backtesting report with Sharpe ratio and max drawdown
+  - Strategy version management and A/B comparison
+
+models:
+  - User
+  - Strategy
+  - Backtest
+  - BacktestTrade
+  - Signal
+  - LiveRun
+  - Order
+  - PerformanceReport
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /strategies
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+  - prefix: /backtests
+    endpoints:
+      - POST /
+      - GET /:id
+      - GET /:id/trades
+      - GET /:id/report
+  - prefix: /live
+    endpoints:
+      - POST /start
+      - POST /stop
+      - GET /status
+      - GET /orders
+  - prefix: /signals
+    endpoints:
+      - GET /
+      - GET /latest

@@ -1,0 +1,59 @@
+name: tradegpt
+display_name: TradeGPT
+category: agentic
+folder: "4.tradegpt"
+description: An AI trading research assistant that analyzes market data, news, and earnings to generate investment thesis reports.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: Redis
+  auth: jwt
+
+features:
+  - Natural language market query processing
+  - Automated earnings report summarization
+  - News sentiment analysis with source aggregation
+  - AI-generated investment thesis with bull/bear cases
+  - Technical analysis indicator commentary
+  - Portfolio Q&A against user-held positions
+  - Research report versioning and export to PDF
+  - Redis-cached market data for analysis context
+
+models:
+  - User
+  - ResearchQuery
+  - ResearchReport
+  - NewsArticle
+  - SentimentResult
+  - Portfolio
+  - Holding
+  - TechnicalSummary
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /research
+    endpoints:
+      - POST /query
+      - GET /reports
+      - GET /reports/:id
+      - GET /reports/:id/download
+  - prefix: /sentiment
+    endpoints:
+      - GET /news/:symbol
+      - POST /analyze
+  - prefix: /portfolio
+    endpoints:
+      - GET /
+      - POST /holdings
+      - DELETE /holdings/:id
+      - POST /ask
+  - prefix: /market
+    endpoints:
+      - GET /summary/:symbol

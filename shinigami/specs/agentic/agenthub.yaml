@@ -1,0 +1,68 @@
+name: agenthub
+display_name: AgentHub
+category: agentic
+folder: "9.agenthub"
+description: A multi-agent orchestration platform for building, deploying, and monitoring AI agent workflows with tool integrations.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: Redis
+  auth: jwt
+
+features:
+  - Agent definition with system prompt, tools, and memory config
+  - Multi-agent workflow orchestration with directed graph execution
+  - Tool integration registry supporting HTTP, MCP, and Python plugins
+  - Async task execution with Redis-backed job queue
+  - Real-time agent run log streaming via Server-Sent Events
+  - Agent memory management with short-term and long-term stores
+  - Run history, replay, and debugging inspector
+  - Team workspaces with agent sharing and versioning
+
+models:
+  - User
+  - Workspace
+  - Agent
+  - AgentVersion
+  - Tool
+  - Workflow
+  - AgentRun
+  - RunLog
+  - Memory
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /agents
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - POST /:id/run
+  - prefix: /workflows
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - POST /:id/execute
+  - prefix: /runs
+    endpoints:
+      - GET /
+      - GET /:id
+      - GET /:id/logs
+      - GET /:id/stream
+  - prefix: /tools
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id

@@ -1,0 +1,59 @@
+name: edengate
+display_name: EdenGate
+category: trading
+folder: "12.edengate"
+description: A Rust-based DeFi gateway providing on-chain swap routing, liquidity pool management, and wallet transaction signing.
+
+stack:
+  language: Rust
+  framework: Actix-web
+  database: PostgreSQL
+  orm: sqlx
+  cache: Redis
+  auth: jwt
+
+features:
+  - Cross-DEX swap routing with best price aggregation
+  - Liquidity pool position management and yield tracking
+  - Gas estimation and transaction fee optimization
+  - Wallet connection and message signing via WalletConnect
+  - On-chain transaction status monitoring
+  - Redis-cached token prices and pool reserves
+  - DeFi portfolio dashboard with token balances
+  - Slippage tolerance and deadline configuration
+
+models:
+  - User
+  - Wallet
+  - SwapRoute
+  - LiquidityPosition
+  - Transaction
+  - Token
+  - Pool
+  - GasEstimate
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /connect-wallet
+      - POST /sign-message
+      - GET /me
+  - prefix: /swap
+    endpoints:
+      - GET /quote
+      - POST /execute
+      - GET /:txHash/status
+  - prefix: /liquidity
+    endpoints:
+      - GET /positions
+      - POST /add
+      - POST /remove
+      - GET /pools
+  - prefix: /portfolio
+    endpoints:
+      - GET /balances
+      - GET /history
+  - prefix: /tokens
+    endpoints:
+      - GET /
+      - GET /:address/price

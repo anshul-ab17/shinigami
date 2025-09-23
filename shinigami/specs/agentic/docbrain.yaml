@@ -1,0 +1,60 @@
+name: docbrain
+display_name: DocBrain
+category: agentic
+folder: "3.docbrain"
+description: An AI document intelligence platform with ingestion, semantic search, Q&A over private document collections via RAG.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Document ingestion supporting PDF, DOCX, and Markdown
+  - Automatic chunking and embedding generation
+  - Vector storage in ChromaDB for semantic similarity search
+  - RAG-powered Q&A with source citation
+  - Document collection management with access controls
+  - Chat history and session management
+  - Relevance feedback and answer rating
+  - Batch ingestion job tracking
+
+models:
+  - User
+  - Collection
+  - Document
+  - Chunk
+  - EmbeddingJob
+  - ChatSession
+  - ChatMessage
+  - AnswerFeedback
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /collections
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /documents
+    endpoints:
+      - POST /ingest
+      - GET /:id/status
+      - DELETE /:id
+  - prefix: /chat
+    endpoints:
+      - POST /sessions
+      - GET /sessions
+      - POST /sessions/:id/messages
+      - GET /sessions/:id/messages
+  - prefix: /search
+    endpoints:
+      - POST /semantic

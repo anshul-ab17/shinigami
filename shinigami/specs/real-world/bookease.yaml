@@ -1,0 +1,57 @@
+name: bookease
+display_name: BookEase
+category: real-world
+folder: "4.bookease"
+description: A venue and service booking platform supporting appointment scheduling, availability management, and payment processing.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: null
+  auth: jwt
+
+features:
+  - Service and resource catalog management
+  - Real-time availability calendar with slot booking
+  - Customer booking history and upcoming appointments
+  - Provider profile pages with reviews and ratings
+  - Automated booking confirmation and reminder emails
+  - Cancellation and rescheduling workflows
+  - Basic payment capture and refund handling
+
+models:
+  - User
+  - Provider
+  - Service
+  - Availability
+  - Booking
+  - Review
+  - Payment
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /providers
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - GET /:id/services
+      - GET /:id/availability
+  - prefix: /bookings
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id/cancel
+      - PUT /:id/reschedule
+  - prefix: /reviews
+    endpoints:
+      - POST /
+      - GET /:providerId

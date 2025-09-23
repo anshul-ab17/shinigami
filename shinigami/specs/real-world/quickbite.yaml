@@ -1,0 +1,66 @@
+name: quickbite
+display_name: QuickBite
+category: real-world
+folder: "10.quickbite"
+description: A food delivery platform connecting restaurants, customers, and delivery drivers with real-time order tracking.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: Redis
+  auth: jwt
+
+features:
+  - Restaurant and menu catalog with categories and item modifiers
+  - Cart management and multi-restaurant order handling
+  - Real-time order status tracking via WebSocket
+  - Driver assignment and location broadcast via Redis
+  - Delivery ETA estimation
+  - Customer address book management
+  - Restaurant ratings and food item reviews
+  - Promo codes and discount application
+
+models:
+  - User
+  - Restaurant
+  - MenuItem
+  - Cart
+  - Order
+  - OrderItem
+  - Driver
+  - Delivery
+  - Review
+  - PromoCode
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /restaurants
+    endpoints:
+      - GET /
+      - GET /:id
+      - GET /:id/menu
+      - GET /nearby
+  - prefix: /cart
+    endpoints:
+      - GET /
+      - POST /items
+      - PUT /items/:id
+      - DELETE /items/:id
+      - DELETE /
+  - prefix: /orders
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - GET /:id/track
+  - prefix: /drivers
+    endpoints:
+      - PUT /location
+      - GET /active-orders
+      - PUT /:orderId/status

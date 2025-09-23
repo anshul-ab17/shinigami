@@ -1,0 +1,57 @@
+name: querypilot
+display_name: QueryPilot
+category: agentic
+folder: "8.querypilot"
+description: An AI natural language to SQL platform that translates plain-English questions into optimized database queries with explanation.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Natural language query translation to SQL
+  - Database schema introspection and indexing
+  - Query explanation in plain English
+  - Query optimization suggestions with cost estimates
+  - Result visualization as tables and charts
+  - Query history and saved query library
+  - Multi-database connection management (PostgreSQL, MySQL, SQLite)
+  - Role-based data access controls for sensitive tables
+
+models:
+  - User
+  - DatabaseConnection
+  - SchemaSnapshot
+  - QuerySession
+  - QueryResult
+  - SavedQuery
+  - AccessPolicy
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /connections
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - POST /:id/test
+      - DELETE /:id
+  - prefix: /query
+    endpoints:
+      - POST /nl-to-sql
+      - POST /execute
+      - GET /history
+      - GET /saved
+      - POST /saved
+  - prefix: /schema
+    endpoints:
+      - GET /:connectionId
+      - POST /:connectionId/refresh

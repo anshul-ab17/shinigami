@@ -1,0 +1,71 @@
+name: taskflow
+display_name: TaskFlow
+category: real-world
+folder: "1.taskflow"
+description: A full-featured project and task management platform with team collaboration, sprints, and time tracking.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: Redis
+  auth: jwt
+
+features:
+  - Project and sprint management with Kanban and list views
+  - Task assignment, prioritization, and due date tracking
+  - Team workspaces with role-based permissions
+  - Real-time notifications via Redis pub/sub
+  - Time tracking and productivity reports
+  - File attachments and comments on tasks
+  - Activity log and audit trail per project
+
+models:
+  - User
+  - Workspace
+  - Project
+  - Sprint
+  - Task
+  - Comment
+  - TimeEntry
+  - Attachment
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - POST /logout
+      - GET /me
+  - prefix: /workspaces
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - GET /:id/members
+      - POST /:id/members
+  - prefix: /projects
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+  - prefix: /tasks
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - POST /:id/comments
+      - POST /:id/time-entries
+  - prefix: /sprints
+    endpoints:
+      - GET /
+      - POST /
+      - PUT /:id
+      - DELETE /:id

@@ -1,0 +1,56 @@
+name: weatherhub
+display_name: WeatherHub
+category: real-world
+folder: "2.weatherhub"
+description: A weather aggregation and alerting platform that collects data from multiple providers and sends personalized forecasts.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Multi-provider weather data ingestion and normalization
+  - Location-based current conditions and hourly/daily forecasts
+  - Custom weather alert subscriptions via email and SMS
+  - Historical weather data storage and trend analysis
+  - Interactive weather map tile serving
+  - Air quality index and UV index tracking
+  - User-defined location favorites
+
+models:
+  - User
+  - Location
+  - WeatherReading
+  - Forecast
+  - Alert
+  - AlertSubscription
+  - Provider
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /locations
+    endpoints:
+      - GET /search
+      - GET /:id/current
+      - GET /:id/forecast
+      - GET /:id/history
+  - prefix: /alerts
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+  - prefix: /subscriptions
+    endpoints:
+      - GET /
+      - POST /
+      - DELETE /:id

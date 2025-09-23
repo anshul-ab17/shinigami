@@ -1,0 +1,60 @@
+name: corepay
+display_name: CorePay
+category: trading
+folder: "1.corepay"
+description: A digital payments core system handling wallets, transfers, transaction ledger, and merchant payment processing.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: Redis
+  auth: jwt
+
+features:
+  - User wallet creation and balance management
+  - Peer-to-peer transfers with idempotency keys
+  - Double-entry ledger for all money movements
+  - Merchant payment acceptance and settlement
+  - Transaction history with filtering and pagination
+  - Fraud detection hooks with rule-based flagging
+  - Webhook delivery for payment events
+  - Redis-cached balance reads for high throughput
+
+models:
+  - User
+  - Wallet
+  - Transaction
+  - LedgerEntry
+  - Merchant
+  - PaymentRequest
+  - Webhook
+  - FraudFlag
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /wallets
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id/balance
+      - GET /:id/transactions
+  - prefix: /transfers
+    endpoints:
+      - POST /
+      - GET /:id
+  - prefix: /payments
+    endpoints:
+      - POST /request
+      - POST /:id/pay
+      - GET /:id/status
+  - prefix: /webhooks
+    endpoints:
+      - GET /
+      - POST /
+      - DELETE /:id

@@ -1,0 +1,59 @@
+name: openbank
+display_name: OpenBank
+category: trading
+folder: "5.openbank"
+description: An open banking API platform exposing account aggregation, payment initiation, and consent management per PSD2/Open Banking standards.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: null
+  auth: jwt
+
+features:
+  - Customer account aggregation across linked banks
+  - Payment initiation service with strong customer authentication
+  - Consent management with granular scope controls
+  - Transaction categorization and enrichment
+  - Third-party provider (TPP) registration and API key management
+  - Compliance audit log for all consent and payment actions
+  - Webhook callbacks for payment status updates
+
+models:
+  - User
+  - BankAccount
+  - Consent
+  - Transaction
+  - PaymentInitiation
+  - ThirdPartyProvider
+  - AuditLog
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /accounts
+    endpoints:
+      - GET /
+      - GET /:id
+      - GET /:id/transactions
+      - GET /:id/balance
+  - prefix: /consents
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /payments
+    endpoints:
+      - POST /initiate
+      - GET /:id/status
+  - prefix: /tpp
+    endpoints:
+      - POST /register
+      - GET /
+      - DELETE /:id

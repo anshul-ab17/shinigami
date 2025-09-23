@@ -1,0 +1,60 @@
+name: pipsmith
+display_name: PipSmith
+category: trading
+folder: "10.pipsmith"
+description: A Rust-based forex trading platform with streaming quote feeds, order management, and position risk controls.
+
+stack:
+  language: Rust
+  framework: Actix-web
+  database: PostgreSQL
+  orm: sqlx
+  cache: Redis
+  auth: jwt
+
+features:
+  - Live FX quote streaming via WebSocket
+  - Market and limit order execution with slippage controls
+  - Position aggregation and real-time P&L
+  - Margin usage tracking and margin call alerts
+  - Rollover and swap rate calculation for overnight positions
+  - Currency pair watchlist and price alerts
+  - Redis-cached tick data for sub-millisecond reads
+  - Full trade history and statement export
+
+models:
+  - User
+  - Account
+  - CurrencyPair
+  - Order
+  - Position
+  - Trade
+  - MarginCall
+  - SwapRate
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /quotes
+    endpoints:
+      - GET /
+      - GET /:pair
+  - prefix: /orders
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /positions
+    endpoints:
+      - GET /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /account
+    endpoints:
+      - GET /balance
+      - GET /margin
+      - GET /history

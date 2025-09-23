@@ -1,0 +1,66 @@
+name: marketsphere
+display_name: MarketSphere
+category: real-world
+folder: "6.marketsphere"
+description: A multi-vendor e-commerce marketplace with product catalog, order management, payments, and seller analytics.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: Redis
+  auth: jwt
+
+features:
+  - Multi-vendor product catalog with categories and search
+  - Cart management and checkout flow
+  - Order lifecycle tracking from placement to delivery
+  - Stripe payment integration with seller payouts
+  - Product reviews and ratings
+  - Seller dashboard with revenue analytics
+  - Inventory management with low-stock alerts
+  - Redis-cached product listings for performance
+
+models:
+  - User
+  - Seller
+  - Product
+  - Category
+  - Cart
+  - Order
+  - OrderItem
+  - Review
+  - Payment
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /products
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - GET /search
+  - prefix: /cart
+    endpoints:
+      - GET /
+      - POST /items
+      - PUT /items/:id
+      - DELETE /items/:id
+  - prefix: /orders
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id/status
+  - prefix: /sellers
+    endpoints:
+      - GET /:id
+      - GET /:id/products
+      - GET /:id/analytics

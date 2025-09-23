@@ -1,0 +1,60 @@
+name: apiwise
+display_name: APIWise
+category: agentic
+folder: "7.apiwise"
+description: An AI API documentation and testing platform that auto-generates OpenAPI specs, test suites, and SDK stubs from code analysis.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Automatic OpenAPI spec generation from source code
+  - AI-generated endpoint descriptions and examples
+  - Interactive API playground with request builder
+  - Automated test suite generation with edge case coverage
+  - SDK stub generation for Python, TypeScript, and Go
+  - API changelog tracking across versions
+  - Mock server generation from OpenAPI specs
+
+models:
+  - User
+  - ApiProject
+  - ApiSpec
+  - Endpoint
+  - TestSuite
+  - TestCase
+  - SdkExport
+  - ChangelogEntry
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /projects
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /specs
+    endpoints:
+      - POST /generate
+      - GET /:id
+      - PUT /:id
+      - GET /:id/endpoints
+  - prefix: /tests
+    endpoints:
+      - POST /generate
+      - GET /:suiteId
+      - POST /:suiteId/run
+  - prefix: /sdk
+    endpoints:
+      - POST /generate
+      - GET /:id/download

@@ -1,0 +1,54 @@
+name: taxforge
+display_name: TaxForge
+category: trading
+folder: "4.taxforge"
+description: A crypto and stock tax calculation platform that ingests trade history and generates compliant tax reports.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Trade history ingestion via CSV and exchange API connectors
+  - Cost-basis calculation using FIFO, LIFO, and HIFO methods
+  - Capital gains and losses computation per tax year
+  - Tax lot tracking and wash-sale detection
+  - Multi-jurisdiction tax rule support
+  - PDF and CSV tax report generation
+  - Portfolio summary with unrealized gains
+
+models:
+  - User
+  - TaxYear
+  - TradeImport
+  - Trade
+  - TaxLot
+  - GainLossRecord
+  - TaxReport
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /trades
+    endpoints:
+      - GET /
+      - POST /import
+      - DELETE /:id
+  - prefix: /tax
+    endpoints:
+      - GET /summary
+      - GET /gains
+      - GET /lots
+      - POST /reports
+      - GET /reports/:id/download
+  - prefix: /settings
+    endpoints:
+      - GET /cost-basis-method
+      - PUT /cost-basis-method

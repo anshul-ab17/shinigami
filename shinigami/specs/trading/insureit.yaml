@@ -1,0 +1,61 @@
+name: insureit
+display_name: InsureIt
+category: trading
+folder: "7.insureit"
+description: A digital insurance platform for policy issuance, premium calculation, claims management, and underwriting workflows.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Insurance product catalog with configurable coverage tiers
+  - Online quoting engine with rule-based premium calculation
+  - Policy issuance and document generation
+  - Claims submission with evidence upload
+  - Claims adjudication workflow with approval stages
+  - Renewal reminders and auto-renewal processing
+  - Agent and broker portal with commission tracking
+
+models:
+  - User
+  - InsuranceProduct
+  - Quote
+  - Policy
+  - Premium
+  - Claim
+  - ClaimDocument
+  - Agent
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /products
+    endpoints:
+      - GET /
+      - GET /:id
+  - prefix: /quotes
+    endpoints:
+      - POST /
+      - GET /:id
+      - PUT /:id/accept
+  - prefix: /policies
+    endpoints:
+      - GET /
+      - GET /:id
+      - POST /:id/renew
+      - PUT /:id/cancel
+  - prefix: /claims
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - POST /:id/documents
+      - PUT /:id/status

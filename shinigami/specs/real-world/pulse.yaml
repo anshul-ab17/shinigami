@@ -1,0 +1,63 @@
+name: pulse
+display_name: Pulse
+category: real-world
+folder: "7.pulse"
+description: A real-time social feed and microblogging platform with posts, follows, likes, and live notification streams.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: null
+  cache: Redis
+  auth: jwt
+
+features:
+  - Microblog posts with text, images, and hashtags
+  - Follow/unfollow user relationships
+  - Personalized timeline feed with Redis-cached fanout
+  - Real-time notifications via WebSocket
+  - Like, repost, and reply interactions
+  - Trending hashtag discovery
+  - Direct messaging between users
+
+models:
+  - User
+  - Post
+  - Follow
+  - Like
+  - Reply
+  - Hashtag
+  - Notification
+  - DirectMessage
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /posts
+    endpoints:
+      - GET /feed
+      - POST /
+      - GET /:id
+      - DELETE /:id
+      - POST /:id/likes
+      - DELETE /:id/likes
+      - POST /:id/replies
+  - prefix: /users
+    endpoints:
+      - GET /:id
+      - GET /:id/posts
+      - POST /:id/follow
+      - DELETE /:id/follow
+  - prefix: /notifications
+    endpoints:
+      - GET /
+      - PUT /:id/read
+  - prefix: /messages
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:conversationId

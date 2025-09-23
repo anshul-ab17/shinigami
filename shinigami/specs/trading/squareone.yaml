@@ -1,0 +1,63 @@
+name: squareone
+display_name: SquareOne
+category: trading
+folder: "8.squareone"
+description: A retail brokerage platform for stock and ETF trading with account management, order routing, and portfolio tracking.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: Redis
+  auth: jwt
+
+features:
+  - Brokerage account opening with KYC verification
+  - Market and limit order placement with routing
+  - Real-time portfolio valuation via Redis-cached prices
+  - Dividend and corporate action processing
+  - Tax lot tracking and realized/unrealized gain reporting
+  - Watchlist and price alert management
+  - Account statement and trade confirmation generation
+  - Fractional share support
+
+models:
+  - User
+  - BrokerageAccount
+  - Holding
+  - Order
+  - Trade
+  - TaxLot
+  - Dividend
+  - PriceAlert
+  - Watchlist
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /account
+    endpoints:
+      - GET /
+      - GET /holdings
+      - GET /history
+      - GET /statements
+  - prefix: /orders
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /market
+    endpoints:
+      - GET /quote/:symbol
+      - GET /search
+  - prefix: /watchlists
+    endpoints:
+      - GET /
+      - POST /
+      - POST /:id/symbols
+      - DELETE /:id/symbols/:symbol

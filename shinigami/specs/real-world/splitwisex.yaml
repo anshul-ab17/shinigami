@@ -1,0 +1,60 @@
+name: splitwisex
+display_name: SplitwiseX
+category: real-world
+folder: "11.splitwisex"
+description: An expense splitting and debt settlement platform for groups, trips, and households with smart balance calculation.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: null
+  auth: jwt
+
+features:
+  - Group creation for trips, households, and events
+  - Expense logging with flexible split modes (equal, percentage, exact)
+  - Smart balance calculation and debt simplification
+  - Settlement recording and history
+  - Multi-currency expense support with conversion
+  - Expense categories and tags for reporting
+  - Email reminders for outstanding balances
+
+models:
+  - User
+  - Group
+  - GroupMember
+  - Expense
+  - ExpenseSplit
+  - Settlement
+  - Balance
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /groups
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - GET /:id/members
+      - POST /:id/members
+      - GET /:id/balances
+  - prefix: /expenses
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+  - prefix: /settlements
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id

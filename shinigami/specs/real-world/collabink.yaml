@@ -1,0 +1,59 @@
+name: collabink
+display_name: CollabInk
+category: real-world
+folder: "5.collabink"
+description: A real-time collaborative document editing platform with rich-text support, version history, and team workspaces.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: MongoDB
+  orm: mongoose
+  cache: Redis
+  auth: jwt
+
+features:
+  - Real-time collaborative editing via WebSocket (OT/CRDT)
+  - Rich-text document editor with inline comments
+  - Version history and document diffing
+  - Team workspaces with permission levels
+  - Document templates and sharing via link
+  - Full-text search across workspace documents
+  - Export to PDF and Markdown
+
+models:
+  - User
+  - Workspace
+  - Document
+  - DocumentVersion
+  - Comment
+  - Permission
+  - Template
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /workspaces
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - GET /:id/members
+      - POST /:id/members
+  - prefix: /documents
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - GET /:id/versions
+      - GET /:id/comments
+      - POST /:id/comments
+  - prefix: /search
+    endpoints:
+      - GET /documents

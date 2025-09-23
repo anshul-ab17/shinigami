@@ -1,0 +1,63 @@
+name: deployai
+display_name: DeployAI
+category: agentic
+folder: "6.deployai"
+description: An AI-assisted deployment orchestration platform that auto-generates CI/CD pipelines, monitors rollouts, and suggests rollback actions.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: Redis
+  auth: jwt
+
+features:
+  - AI pipeline generation from repository analysis
+  - Multi-environment deployment management (dev/staging/prod)
+  - Real-time deployment log streaming via Redis pub/sub
+  - Automated health check integration post-deploy
+  - Rollback recommendation engine with impact analysis
+  - Deployment history and change audit trail
+  - Slack and webhook notifications for deployment events
+  - Secret and environment variable management
+
+models:
+  - User
+  - Project
+  - Pipeline
+  - Deployment
+  - DeploymentLog
+  - Environment
+  - HealthCheck
+  - RollbackRecommendation
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /projects
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /pipelines
+    endpoints:
+      - GET /
+      - POST /generate
+      - GET /:id
+      - PUT /:id
+  - prefix: /deployments
+    endpoints:
+      - POST /
+      - GET /:id
+      - GET /:id/logs
+      - POST /:id/rollback
+  - prefix: /environments
+    endpoints:
+      - GET /
+      - GET /:id/secrets
+      - PUT /:id/secrets

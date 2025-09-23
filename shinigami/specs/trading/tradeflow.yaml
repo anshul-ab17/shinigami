@@ -1,0 +1,61 @@
+name: tradeflow
+display_name: TradeFlow
+category: trading
+folder: "9.tradeflow"
+description: A B2B trade finance platform covering letters of credit, invoice discounting, and supply chain payment workflows.
+
+stack:
+  language: Go
+  framework: Gin
+  database: PostgreSQL
+  orm: null
+  cache: Redis
+  auth: jwt
+
+features:
+  - Letter of credit issuance and lifecycle management
+  - Invoice upload and discount rate quoting
+  - Supply chain payment scheduling and release
+  - Multi-party approval workflows with digital signatures
+  - Risk scoring for buyers and suppliers
+  - Settlement reconciliation and reporting
+  - Redis-cached counterparty credit limits
+  - Document vault for trade documents
+
+models:
+  - User
+  - Company
+  - LetterOfCredit
+  - Invoice
+  - DiscountRequest
+  - PaymentSchedule
+  - RiskScore
+  - TradeDocument
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /lc
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id/status
+  - prefix: /invoices
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - POST /:id/discount-request
+  - prefix: /payments
+    endpoints:
+      - GET /
+      - GET /:id
+      - PUT /:id/release
+  - prefix: /companies
+    endpoints:
+      - GET /:id/risk
+      - GET /:id/limits

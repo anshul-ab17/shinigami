@@ -1,0 +1,60 @@
+name: crosswire
+display_name: CrossWire
+category: trading
+folder: "6.crosswire"
+description: A cross-border money transfer platform with FX rate management, compliance screening, and multi-corridor payment routing.
+
+stack:
+  language: TypeScript
+  framework: Express
+  database: PostgreSQL
+  orm: prisma
+  cache: Redis
+  auth: jwt
+
+features:
+  - Multi-corridor remittance routing with best-rate selection
+  - Live FX rate feeds with Redis-cached mid-market rates
+  - KYC/AML compliance screening integration
+  - Transfer status tracking from initiation to credit
+  - Fee and FX margin calculation per corridor
+  - Recipient bank account management
+  - Compliance reporting and suspicious activity flagging
+  - Transfer limits and velocity checks
+
+models:
+  - User
+  - KycProfile
+  - Recipient
+  - Transfer
+  - FxRate
+  - ComplianceCheck
+  - Corridor
+  - Fee
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /kyc
+    endpoints:
+      - POST /submit
+      - GET /status
+  - prefix: /recipients
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - DELETE /:id
+  - prefix: /transfers
+    endpoints:
+      - POST /quote
+      - POST /
+      - GET /:id
+      - GET /:id/status
+  - prefix: /rates
+    endpoints:
+      - GET /
+      - GET /:fromCurrency/:toCurrency

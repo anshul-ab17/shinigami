@@ -1,0 +1,65 @@
+name: talentforge
+display_name: TalentForge
+category: real-world
+folder: "3.talentforge"
+description: An end-to-end recruitment platform covering job postings, applicant tracking, interview scheduling, and offer management.
+
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+  orm: sqlalchemy
+  cache: Redis
+  auth: jwt
+
+features:
+  - Job posting creation with structured requirements and compensation
+  - Multi-stage applicant tracking pipeline
+  - Resume parsing and candidate profile management
+  - Interview scheduling with calendar integration
+  - Collaborative evaluation scorecards
+  - Automated email notifications to candidates
+  - Analytics dashboard for hiring funnel metrics
+  - Role-based access for recruiters and hiring managers
+
+models:
+  - User
+  - Company
+  - JobPosting
+  - Candidate
+  - Application
+  - Interview
+  - Scorecard
+  - Offer
+
+api_routes:
+  - prefix: /auth
+    endpoints:
+      - POST /register
+      - POST /login
+      - GET /me
+  - prefix: /jobs
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+      - DELETE /:id
+      - GET /:id/applications
+  - prefix: /candidates
+    endpoints:
+      - GET /
+      - POST /
+      - GET /:id
+      - PUT /:id
+  - prefix: /applications
+    endpoints:
+      - GET /:id
+      - PUT /:id/stage
+      - POST /:id/interviews
+      - POST /:id/scorecards
+  - prefix: /offers
+    endpoints:
+      - POST /
+      - GET /:id
+      - PUT /:id/status
