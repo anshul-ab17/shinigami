@@ -170,6 +170,7 @@ def create(
 def generate(
     name: str = typer.Argument(help="Project name (e.g. taskflow)"),
     provider: Optional[str] = typer.Option(None, "--provider", "-p", help="LLM provider (claude/openai)"),
+    spec_file: Optional[Path] = typer.Option(None, "--spec", "-s", help="Custom spec YAML file path"),
     config: Optional[Path] = typer.Option(None, "--config", "-c", help="Config file path"),
 ):
     """Generate a full backend API project."""
@@ -177,11 +178,20 @@ def generate(
     if provider:
         settings.provider = provider
 
-    try:
-        spec = load_spec(name, settings.specs_dir)
-    except FileNotFoundError:
-        console.print(f"[red]Error: spec '{name}' not found[/]")
-        raise typer.Exit(1)
+    if spec_file:
+        try:
+            with open(spec_file) as f:
+                data = yaml.safe_load(f)
+            spec = ProjectSpec(**data)
+        except Exception as e:
+            console.print(f"[red]Error loading spec file: {e}[/]")
+            raise typer.Exit(1)
+    else:
+        try:
+            spec = load_spec(name, settings.specs_dir)
+        except FileNotFoundError:
+            console.print(f"[red]Error: spec '{name}' not found[/]")
+            raise typer.Exit(1)
 
     try:
         llm = get_provider(settings)
