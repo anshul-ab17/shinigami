@@ -65,6 +65,19 @@ def build_middleware_prompt(spec: ProjectSpec) -> str:
     return "\n".join(lines)
 
 
+def build_suggest_prompt(description: str, features: list[str], language: str, framework: str, database: str) -> str:
+    return "\n".join([
+        f"Project: {description}",
+        f"Features: {'; '.join(features)}",
+        f"Stack: {language}/{framework}/{database}",
+        "",
+        "Based on these features, suggest database models and API route groups.",
+        "Return ONLY valid JSON (no markdown fences) in this exact format:",
+        '{"models": ["User", "Post", ...], "routes": [{"prefix": "/auth", "endpoints": ["POST /register", "POST /login"]}, ...]}',
+        "Be practical — include only models and routes that the features actually need.",
+    ])
+
+
 def build_tests_prompt(spec: ProjectSpec) -> str:
     route_summary = "; ".join(f"{r.prefix}: {', '.join(r.endpoints)}" for r in spec.api_routes)
     lines = [
