@@ -1,4 +1,5 @@
 import asyncio
+import json
 from pathlib import Path
 from typing import Optional
 
@@ -12,6 +13,7 @@ from shinigami.config import load_settings
 from shinigami.models import ProjectSpec, StackConfig, RouteGroup, load_spec, list_specs
 from shinigami.llm import get_provider
 from shinigami.generator import Generator
+from shinigami.prompts import build_suggest_prompt
 
 app = typer.Typer(name="shinigami", help="Backend API code generation agent")
 console = Console()
@@ -81,36 +83,81 @@ def create(
             break
         features.append(feat)
 
-    # Models
-    console.print("\n[bold yellow]Models[/]")
-    console.print("  Enter model names one per line. Empty line to finish.")
+    # LLM-powered suggestions for models + routes
     models: list[str] = []
-    while True:
-        model = Prompt.ask(f"  Model {len(models) + 1}", default="")
-        if not model:
-            if not models:
-                console.print("  [red]Need at least one model[/]")
-                continue
-            break
-        models.append(model)
-
-    # Routes
-    console.print("\n[bold yellow]API Routes[/]")
-    console.print("  Define route groups. Empty prefix to finish.")
     api_routes: list[RouteGroup] = []
-    while True:
-        prefix = Prompt.ask(f"  Route prefix {len(api_routes) + 1} (e.g. /auth)", default="")
-        if not prefix:
-            if not api_routes:
-                console.print("  [red]Need at least one route group[/]")
-                continue
-            break
-        if not prefix.startswith("/"):
-            prefix = f"/{prefix}"
-        endpoints_str = Prompt.ask("    Endpoints (comma-separated)")
-        endpoints = [e.strip() for e in endpoints_str.split(",") if e.strip()]
-        if endpoints:
-            api_routes.append(RouteGroup(prefix=prefix, endpoints=endpoints))
+    suggested = False
+
+    try:
+        settings = load_settings(config)
+        llm = get_provider(settings)
+        console.print("\n[bold yellow]Generating suggestions from features...[/]")
+        prompt = build_suggest_prompt(description, features, language, framework, database)
+        raw = asyncio.run(llm.generate(prompt, "You are a backend architecture assistant. Return only valid JSON."))
+        # Strip markdown fences if present
+        cleaned = raw.strip()
+        if cleaned.startswith("```"):
+            cleaned = cleaned.split("\n", 1)[1]
+            if cleaned.endswith("```"):
+                cleaned = cleaned[:-3]
+            cleaned = cleaned.strip()
+        suggestions = json.loads(cleaned)
+
+        # Show suggested models
+        suggested_models = suggestions.get("models", [])
+        if suggested_models:
+            console.print(f"\n[bold green]Suggested models:[/] {', '.join(suggested_models)}")
+            if Confirm.ask("  Accept these models?", default=True):
+                models = suggested_models
+            else:
+                edit_str = Prompt.ask("  Edit models (comma-separated)", default=", ".join(suggested_models))
+                models = [m.strip() for m in edit_str.split(",") if m.strip()]
+
+        # Show suggested routes
+        suggested_routes = suggestions.get("routes", [])
+        if suggested_routes:
+            console.print("\n[bold green]Suggested routes:[/]")
+            for r in suggested_routes:
+                console.print(f"  {r['prefix']}: {', '.join(r['endpoints'])}")
+            if Confirm.ask("  Accept these routes?", default=True):
+                api_routes = [RouteGroup(prefix=r["prefix"], endpoints=r["endpoints"]) for r in suggested_routes]
+            else:
+                console.print("  Falling back to manual route entry.")
+
+        suggested = bool(models and api_routes)
+    except Exception as e:
+        console.print(f"\n[yellow]LLM suggestion skipped: {e}[/]")
+
+    # Manual fallback for models
+    if not models:
+        console.print("\n[bold yellow]Models[/]")
+        console.print("  Enter model names one per line. Empty line to finish.")
+        while True:
+            model = Prompt.ask(f"  Model {len(models) + 1}", default="")
+            if not model:
+                if not models:
+                    console.print("  [red]Need at least one model[/]")
+                    continue
+                break
+            models.append(model)
+
+    # Manual fallback for routes
+    if not api_routes:
+        console.print("\n[bold yellow]API Routes[/]")
+        console.print("  Define route groups. Empty prefix to finish.")
+        while True:
+            prefix = Prompt.ask(f"  Route prefix {len(api_routes) + 1} (e.g. /auth)", default="")
+            if not prefix:
+                if not api_routes:
+                    console.print("  [red]Need at least one route group[/]")
+                    continue
+                break
+            if not prefix.startswith("/"):
+                prefix = f"/{prefix}"
+            endpoints_str = Prompt.ask("    Endpoints (comma-separated)")
+            endpoints = [e.strip() for e in endpoints_str.split(",") if e.strip()]
+            if endpoints:
+                api_routes.append(RouteGroup(prefix=prefix, endpoints=endpoints))
 
     # Build spec
     spec = ProjectSpec(
