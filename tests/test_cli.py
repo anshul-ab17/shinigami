@@ -92,6 +92,35 @@ def test_cli_generate_spec_not_found():
             assert result.exit_code != 0 or "error" in result.output.lower()
 
 
+def test_cli_create_with_llm_suggestions(tmp_path):
+    suggestion_json = '{"models": ["User", "Task", "Project"], "routes": [{"prefix": "/auth", "endpoints": ["POST /register", "POST /login"]}, {"prefix": "/tasks", "endpoints": ["GET /", "POST /", "PUT /:id"]}]}'
+    mock_llm = MagicMock()
+    mock_llm.generate = AsyncMock(return_value=suggestion_json)
+
+    with patch("shinigami.cli.get_provider", return_value=mock_llm):
+        with patch("shinigami.cli.load_settings") as mock_settings:
+            settings = MagicMock()
+            settings.specs_dir = tmp_path / "specs"
+            mock_settings.return_value = settings
+
+            # Inputs: name, display_name, description, category, folder,
+            #         language, framework, database, redis(n), auth,
+            #         feature1, feature2, empty(done),
+            #         accept models(y), accept routes(y),
+            #         save(y), generate(n)
+            inputs = "\n".join([
+                "testproj", "TestProj", "A test project", "real-world", "1.testproj",
+                "typescript", "Express", "postgresql", "n", "jwt",
+                "user auth", "task management", "",
+                "y", "y",
+                "y", "n",
+            ])
+            result = runner.invoke(app, ["create", "-o", str(tmp_path / "test.yaml")], input=inputs)
+            assert result.exit_code == 0
+            assert "Suggested models" in result.output
+            assert "Spec saved" in result.output
+
+
 def test_cli_generate_provider_override():
     with patch("shinigami.cli.load_settings") as mock_settings:
         with patch("shinigami.cli.load_spec") as mock_load:
