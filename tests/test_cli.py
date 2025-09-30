@@ -121,6 +121,28 @@ def test_cli_create_with_llm_suggestions(tmp_path):
             assert "Spec saved" in result.output
 
 
+def test_cli_create_llm_fallback_manual(tmp_path):
+    with patch("shinigami.cli.get_provider", side_effect=Exception("No API key")):
+        with patch("shinigami.cli.load_settings") as mock_settings:
+            settings = MagicMock()
+            settings.specs_dir = tmp_path / "specs"
+            mock_settings.return_value = settings
+
+            # Manual flow: after LLM fails, enter models and routes manually
+            inputs = "\n".join([
+                "testproj", "TestProj", "A test project", "real-world", "1.testproj",
+                "typescript", "Express", "postgresql", "n", "jwt",
+                "user auth", "",
+                "User", "Task", "",
+                "/auth", "POST /login, POST /register", "",
+                "y", "n",
+            ])
+            result = runner.invoke(app, ["create", "-o", str(tmp_path / "test.yaml")], input=inputs)
+            assert result.exit_code == 0
+            assert "LLM suggestion skipped" in result.output
+            assert "Spec saved" in result.output
+
+
 def test_cli_generate_provider_override():
     with patch("shinigami.cli.load_settings") as mock_settings:
         with patch("shinigami.cli.load_spec") as mock_load:
