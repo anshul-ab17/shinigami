@@ -1,7 +1,11 @@
 [project]
-name = "shinigami"
+name = "shinigami-cli"
 version = "0.1.0"
 description = "Backend API code generation agent"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Anshul", email = "anshul.ab17x@gmail.com" }]
 requires-python = ">=3.11"
 dependencies = [
     "typer>=0.9.0",
@@ -12,6 +16,7 @@ dependencies = [
     "pydantic-settings>=2.0.0",
     "anthropic>=0.40.0",
     "openai>=1.50.0",
+    "google-genai>=1.0.0",
 ]
 
 [project.scripts]
