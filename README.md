@@ -5,56 +5,58 @@ Backend API code generation agent. Generates full working backend projects acros
 ## Install
 
 ```bash
-pip install -e .
+pip install shinigami-cli
 ```
 
 ## Usage
 
 ```bash
-# List all available projects
+# List all available built-in project specs
 shinigami list
 
 # Show project details
-shinigami info taskflow
+shinigami info <name>
 
 # Generate a project (requires API key)
 export ANTHROPIC_API_KEY=sk-...
-shinigami generate taskflow
+shinigami generate <name>
 
 # Use OpenAI instead
 export OPENAI_API_KEY=sk-...
-shinigami generate taskflow --provider openai
+shinigami generate <name> --provider openai
+
+# Use Gemini instead
+export GOOGLE_API_KEY=...
+shinigami generate <name> --provider gemini
+
+# Create a spec interactively
+shinigami create
+
+# Generate from your own spec
+shinigami generate myproject --spec ./my-specs/my-project.yaml
 ```
 
 ## Stacks
 
-| Stack | Framework | Projects |
-|-------|-----------|----------|
-| TypeScript | Express + Prisma | 7 |
-| Python | FastAPI + SQLAlchemy | 10 |
-| Go | Gin | 4 |
-| Rust | Actix-web + SQLx | 4 |
-| C++ | Drogon | 1 |
+| Stack | Framework |
+|-------|-----------|
+| TypeScript | Express + Prisma |
+| Python | FastAPI + SQLAlchemy |
+| Go | Gin |
+| Rust | Actix-web + SQLx |
+| C++ | Drogon |
 
-## Projects (32)
-
-### Real-World
-TaskFlow, WeatherHub, TalentForge, BookEase, CollabInk, MarketSphere, Pulse, VoteSphere, StreamForge, QuickBite, SplitWiseX
-
-### Trading & Fintech
-CorePay, CoinForge, Kaido, TaxForge, OpenBank, CrossWire, InsureIt, SquareOne, TradeFlow, PipSmith, Mercury, EdenGate
-
-### Agentic AI
-CodeForge, ArchGen, DocBrain, TradeGPT, LogSense, DeployAI, APIWise, QueryPilot, AgentHub
+Ships with a set of built-in specs across real-world, fintech, and agentic-AI categories — run `shinigami list` to see them, or write your own with `shinigami create`.
 
 ## Config
 
 Set via environment or `shinigami.config.yaml`:
 
 ```yaml
-provider: claude          # or openai
+provider: claude          # claude | openai | gemini
 claude_model: claude-sonnet-4-6
 openai_model: gpt-4o
+gemini_model: gemini-2.5-pro
 output_dir: ../backend
 ```
 
