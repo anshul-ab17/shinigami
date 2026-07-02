@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     provider: str = "claude"
     claude_model: str = "claude-sonnet-4-6"
     openai_model: str = "gpt-4o"
+    gemini_model: str = "gemini-2.5-pro"
     output_dir: Path = Path("../backend")
     specs_dir: Path = Path(__file__).parent / "specs"
     templates_dir: Path = Path(__file__).parent / "templates"

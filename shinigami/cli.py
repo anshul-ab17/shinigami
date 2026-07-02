@@ -216,7 +216,7 @@ def create(
 @app.command()
 def generate(
     name: str = typer.Argument(help="Project name (e.g. taskflow)"),
-    provider: Optional[str] = typer.Option(None, "--provider", "-p", help="LLM provider (claude/openai)"),
+    provider: Optional[str] = typer.Option(None, "--provider", "-p", help="LLM provider (claude/openai/gemini)"),
     spec_file: Optional[Path] = typer.Option(None, "--spec", "-s", help="Custom spec YAML file path"),
     config: Optional[Path] = typer.Option(None, "--config", "-c", help="Config file path"),
 ):
