@@ -8,6 +8,9 @@ Backend API code generation agent. Generates full working backend projects acros
 pip install shinigami-cli
 ```
 
+PyPI: https://pypi.org/project/shinigami-cli/
+TestPyPI: https://test.pypi.org/project/shinigami-cli/
+
 ## Usage
 
 ```bash
